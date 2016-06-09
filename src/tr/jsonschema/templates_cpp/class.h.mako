@@ -72,9 +72,15 @@ namespace ${ns} {
 class_name = classDef.name
 superClass = classDef.superClasses[0] if len(classDef.superClasses) else None
 %>
-class ${class_name + ((': protected ' + superClass) if superClass else '')}
+class ${class_name + ((' : public ' + superClass) if superClass else '')}
 {
 public:
+    ALIAS_PTR_TYPES(${class_name});
+
+    // TODO: We should eventually make the destructor private to ensure we
+    //       only allocate instances of this class using std::make_shared().
+    ~${class_name}() {}
+
 % for e in classDef.enum_defs:
 ${enumDecl(e)}
 % endfor
